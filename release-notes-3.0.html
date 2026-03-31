@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gigachat – Release Notes 3.0</title>
+  <meta name="description" content="Gigachat Release Notes 3.0 – GigaScore, Design-Updates, Statistik & Fixes." />
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --bg2:#0f1220;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.085);
+      --border: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --muted2: rgba(255,255,255,.55);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --shadow2: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 22px;
+      --radius2: 16px;
+      --max: 1040px;
+      --grad1: radial-gradient(1200px 800px at 20% -10%, rgba(121, 86, 255,.35), transparent 60%),
+               radial-gradient(1000px 700px at 90% 10%, rgba(56, 189, 248,.28), transparent 55%),
+               radial-gradient(900px 650px at 60% 110%, rgba(34, 197, 94,.22), transparent 55%);
+      --grad2: linear-gradient(135deg, rgba(121, 86, 255,.25), rgba(56, 189, 248,.18), rgba(34, 197, 94,.16));
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f6f7fb;
+        --bg2:#ffffff;
+        --card: rgba(0,0,0,.035);
+        --card2: rgba(0,0,0,.055);
+        --border: rgba(0,0,0,.10);
+        --text: rgba(0,0,0,.88);
+        --muted: rgba(0,0,0,.62);
+        --muted2: rgba(0,0,0,.52);
+        --shadow: 0 18px 60px rgba(0,0,0,.10);
+        --shadow2: 0 12px 30px rgba(0,0,0,.08);
+        --grad1: radial-gradient(1200px 800px at 20% -10%, rgba(121, 86, 255,.18), transparent 60%),
+                 radial-gradient(1000px 700px at 90% 10%, rgba(56, 189, 248,.16), transparent 55%),
+                 radial-gradient(900px 650px at 60% 110%, rgba(34, 197, 94,.12), transparent 55%);
+        --grad2: linear-gradient(135deg, rgba(121, 86, 255,.14), rgba(56, 189, 248,.10), rgba(34, 197, 94,.10));
+      }
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      overflow-x:hidden;
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 78px 16px 90px; }
+    .glow{
+      position:fixed; inset:-40px;
+      background: var(--grad1);
+      pointer-events:none;
+      opacity: .9;
+      z-index:-2;
+      transform: translateZ(0);
+      animation: floatGlow 10s ease-in-out infinite alternate;
+    }
+    @keyframes floatGlow{
+      from{ transform: translate3d(0,0,0) scale(1); }
+      to{ transform: translate3d(0,-10px,0) scale(1.02); }
+    }
+    .topbar{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(10,10,15,.55);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      z-index: 999;
+    }
+
+    @media (prefers-color-scheme: light){
+      .topbar{ background: rgba(255,255,255,.65); border-bottom:1px solid rgba(0,0,0,.08); }
+    }
+    .topbar .inner{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      user-select:none;
+    }
+    .logo{
+      width: 30px; height: 30px;
+      border-radius: 10px;
+      background: var(--grad2);
+      box-shadow: var(--shadow2);
+      border: 1px solid var(--border);
+    }
+    .nav{
+      display:flex; gap:8px; flex-wrap:wrap;
+      align-items:center; justify-content:flex-end;
+    }
+    .pill{
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      font-size: 13px;
+      color: var(--muted);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .pill:hover{ transform: translateY(-1px); background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.20); }
+    @media (prefers-color-scheme: light){
+      .pill{ background: rgba(0,0,0,.02); }
+      .pill:hover{ background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.14); }
+    }
+    .hero{ padding: 52px 0 18px; }
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      font-size: 13px;
+      width: fit-content;
+    }
+    .tag .dot{
+      width: 8px; height: 8px; border-radius: 99px;
+      background: rgba(34,197,94,.9);
+      box-shadow: 0 0 0 5px rgba(34,197,94,.15);
+    }
+    h1{
+      margin: 14px 0 8px;
+      font-size: clamp(34px, 4.2vw, 58px);
+      line-height: 1.03;
+      letter-spacing: -.8px;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 70ch;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 880px){ .heroGrid{ grid-template-columns:1fr; } }
+
+    .card{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow2);
+    }
+    @media (prefers-color-scheme: light){
+      .card{ background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.72)); }
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 1024px){
+      .kpis{ grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px){
+      .kpis{ grid-template-columns: 1fr; }
+    }
+
+    .kpi{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: 18px;
+      padding: 12px;
+      transition: transform .18s ease, background .18s ease;
+    }
+    .kpi:hover{ transform: translateY(-2px); background: rgba(255,255,255,.065); }
+    @media (prefers-color-scheme: light){
+      .kpi{ background: rgba(0,0,0,.02); }
+      .kpi:hover{ background: rgba(0,0,0,.03); }
+    }
+    .kpi .big{ font-size: 18px; font-weight: 760; letter-spacing: -.2px; }
+    .kpi .small{ color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+    .section{ margin-top: 18px; padding-top: 6px; }
+    .sectionTitle{ font-size: 18px; letter-spacing: -.2px; margin: 14px 0 10px; }
+
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 880px){ .grid2{ grid-template-columns:1fr; } }
+
+    .feat{
+      display:flex; gap: 12px; align-items:flex-start;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      transition: transform .18s ease, background .18s ease;
+    }
+    .feat:hover{ transform: translateY(-2px); background: rgba(255,255,255,.065); }
+    @media (prefers-color-scheme: light){
+      .feat{ background: rgba(0,0,0,.02); }
+      .feat:hover{ background: rgba(0,0,0,.03); }
+    }
+    .icon{
+      width: 38px; height: 38px;
+      border-radius: 14px;
+      background: var(--grad2);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow2);
+      display:flex; align-items:center; justify-content:center;
+      font-size: 18px;
+      flex: 0 0 auto;
+    }
+    .feat h3{ margin: 0; font-size: 15px; letter-spacing: -.2px; }
+    .feat p{ margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+
+    .timeline{ display:grid; gap: 10px; }
+    .version{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background: rgba(255,255,255,.04);
+    }
+    @media (prefers-color-scheme: light){ .version{ background: rgba(0,0,0,.02); } }
+    .versionHead{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 16px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .vLeft{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .badge{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .vTitle{ font-weight: 760; letter-spacing: -.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .chev{ opacity:.7; transition: transform .22s ease; }
+    .version[open] .chev{ transform: rotate(180deg); }
+    .vBody{ padding: 0 16px 14px; color: var(--muted); font-size: 13px; }
+    .vBody ul{ margin: 8px 0 0 18px; }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+    }
+    th,td{
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      padding: 10px 12px;
+      text-align:left;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    th{ color: var(--muted); font-weight: 650; }
+    tr:last-child td{ border-bottom:none; }
+    @media (prefers-color-scheme: light){
+      th,td{ border-bottom: 1px solid rgba(0,0,0,.08); }
+      table{ background: rgba(255,255,255,.75); }
+    }
+
+    .chipRow{ display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer{ margin-top: 22px; color: var(--muted2); font-size: 12px; text-align:center; padding: 24px 0 0; }
+
+
+
+    /* Hero text shine */
+    .shine{
+      background: linear-gradient(90deg, rgba(255,255,255,.96), rgba(255,255,255,.70), rgba(255,255,255,.96));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 220% 100%;
+      animation: shine 6s ease-in-out infinite;
+    }
+    @keyframes shine{
+      0%{ background-position: 0% 50%; }
+      50%{ background-position: 100% 50%; }
+      100%{ background-position: 0% 50%; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .glow{ animation:none; }
+      .pill, .kpi, .feat{ transition:none; }
+      .chev{ transition:none; }
+      .shine{ animation:none; color: var(--text); background:none; }
+    }
+
+        .gigascoreGrid{
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px){
+      .gigascoreGrid{
+        grid-template-columns: 1fr;
+      }
+    }
+
+/* CLEAN SCROLL REVEAL – BASE */
+.reveal,
+.stagger > *{
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: opacity, transform;
+}
+
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <img src="logo.png" alt="Gigachat Logo" class="logo">
+        <div>Gigachat</div>
+      </div>
+      <div class="nav">
+        <a class="pill" href="#neu">Neu</a>
+        <!-- <a class="pill" href="#gigascore">GigaScore</a> -->
+        <a class="pill" href="#timeline">Versions Verlauf</a>
+        <a class="pill" href="#features">Features</a>
+        <a class="pill" href="#zukunft">Zukünfig Geplant</a>
+        <a class="pill" href="index.php">Zur Startseite</a>
+      </div>
+    </div>
+  </div>
+
+
+<div class="wrap">
+  <header class="hero">
+    <div class="tag"><span class="dot"></span> Release Notes <strong>3.0</strong></div>
+
+    <h1 class="shine">Schneller. Stabiler. Gigachat.</h1>
+
+    <p class="subtitle">
+      <strong>Version 3.0</strong> bringt das, was wirklich zählt:
+      funktionierende Push-Benachrichtigungen, spürbar bessere Performance
+      und Features, die den Chat smarter machen – ohne unnötigen Kram.
+    </p>
+
+    <div class="chipRow reveal">
+      <span class="chip">🚀 Performance</span>
+      <span class="chip">🔔 Push</span>
+      <span class="chip">🟢 Online-Status</span>
+      <span class="chip">📝 Notizen</span>
+      <span class="chip">🎉 GIFs</span>
+    </div>
+
+    <div class="heroGrid" id="wichtig">
+
+      <section class="card reveal">
+        <h2 class="sectionTitle reveal" style="margin-top:0">Die wichtigsten Features</h2>
+
+        <div class="grid2 stagger" style="margin-top:10px">
+          <div class="feat">
+            <div class="icon">📝</div>
+            <div>
+              <h3>Kontaktliste</h3>
+              <p>
+                Übersichtlicher Aufbau mit Pinnen, Archivieren soiwe Aliasen.
+                plus neuer Sortierung nach zuletzt gechattet.
+              </p>
+            </div>
+          </div>
+
+          <div class="feat">
+            <div class="icon">👥</div>
+            <div>
+              <h3>Gruppen</h3>
+              <p>
+                Privates schreiben sowie Gruppen mit mehreren Personen erstellen und verwalten.
+              </p>
+            </div>
+          </div>
+
+          <div class="feat">
+            <div class="icon">🔔</div>
+            <div>
+              <h3>Push & Zuverlässigkeit</h3>
+              <p>
+                Push-Benachrichtigungen funktionieren stabil bei Direkt-
+                und Gruppen-Chats. Sogar auf Schul-iPdas als WebApp.
+              </p>
+            </div>
+          </div>
+
+          <div class="feat">
+            <div class="icon">🖼️</div>
+            <div>
+              <h3>Medien & GIFs</h3>
+              <p>
+                Bilder, Dateien und GIFs direkt im Chat versenden –
+                mit Vorschau und schnellerem Laden.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </header>
+
+    <section class="section reveal" id="neu">
+      <h2 class="sectionTitle reveal">Neu in 3.0</h2>
+      <div class="grid2 stagger">
+        <div class="feat">
+          <div class="icon">🖼️</div>
+          <div>
+            <h3>Gifs versenden</h3>
+            <p>Aller art Gifs können jetzt versendet werden für die beste Komuniaktion. Genuzt wird dafür: giphy.com</p>
+             
+          </div>
+        </div>
+        <div class="feat">
+          <div class="icon">🟢</div>
+          <div>
+            <h3>Online-Status</h3>
+            <p>Sehe in echtzeit wer onlien ist oder wann er es zuletzt war. Zudem gibt es eine Live Lesebestätigung.(✔️/👁️)</p>
+          </div>
+        </div>
+          
+        <div class="feat">
+          <div class="icon">📝</div>
+          <div>
+            <h3>Private Notizen</h3>
+            <p>Erstelle private Notizen um zb. Passwörter oder ander lange Texte von Gerät zu Gerät einfach zu übertragen.</p>
+          </div>
+        </div>
+
+          <div class="feat">
+          <div class="icon">🚀</div>
+          <div>
+            <h3>Bessere Performance & Neues Design</h3>
+            <p>Mit Bessere Performance & überarbeitet Design, erlebe eine schnellere und intuitivere Benutzererfahrung.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="gigascore">
+      <h2 class="sectionTitle reveal">GigaScore</h2>
+      <div class="card gigascoreGrid">
+        <div class="gigaTable">
+          <table aria-label="GigaScore Emoji Stufen">
+            <thead>
+              <tr><th>Stufe</th><th>Emoji</th><th>Ab Score</th><th>Bedeutung</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>🌱</td><td>0</td><td>Start</td></tr>
+              <tr><td>2</td><td>⚡</td><td>50</td><td>Aktiv</td></tr>
+              <tr><td>3</td><td>🔥</td><td>200</td><td>Sehr aktiv</td></tr>
+              <tr><td>4</td><td>⭐</td><td>600</td><td>Pro</td></tr>
+              <tr><td>5</td><td>💎</td><td>1500</td><td>Elite</td></tr>
+              <tr><td>6</td><td>👑</td><td>5000</td><td>Legende</td></tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <div class="gigaInfo small">
+          <p style="margin-top:0">
+            Der GigaScore zeigt deine Aktivität im Chat.
+            Er basiert ausschließlich auf gesendeten und empfangenen Nachrichten.
+          </p>
+          <ul>
+            <li><strong>+1</strong> für jede <strong>gesendete</strong> Nachricht</li>
+            <li><strong>+1</strong> für jede <strong>empfangene</strong> Nachricht</li>
+            <li>Gruppen zählen vollständig mit</li>
+          </ul>
+          <p>
+            Die Emoji-Stufe ist rein visuell und hat keinen Einfluss
+            auf Funktionen oder Sichtbarkeit.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+</section>
+
+
+
+    <section class="section reveal" id="timeline">
+      <h2 class="sectionTitle reveal">Verlauf nach Version</h2>
+      <div class="timeline">
+        <details class="version" open>
+          <summary class="versionHead">
+            <div class="vLeft">
+              <span class="badge">3.0</span>
+              <span class="vTitle">GigaScore, UI‑Polish & Owner‑Support</span>
+            </div>
+            <span class="chev">⌄</span>
+          </summary>
+          <div class="vBody">
+            <ul>
+              <li><strong>GigaScore</strong>: Zählen + Anzeige (Header + Emoji‑Stufen).</li>
+              <li><strong>Kontaktliste</strong>: Personen runder, Gruppen eckiger, Pinned‑Highlight statt Stern, linksbündige Kacheln.</li>
+              <li><strong>Admin‑Panel (Owner)</strong>: Support‑Aktionen (reset, Nachrichten ansehen/löschen, Account sauber löschen).</li>
+      
+                <li>Beim Öffnen eines Chats landet man nicht mehr ganz unten – es werden zuerst die letzten ~20 Nachrichten geladen.</li>
+                <li>Nachrichten werden beim Scrollen sauber nachgeladen (kein Jumping mehr).</li>
+                <li>Push-Benachrichtigungen auf dem Sperrbildschirm bleiben sichtbar und werden nicht mehr falsch als gelesen markiert.</li>
+                <li>Mitteilungen können jetzt komplett deaktiviert werden.</li>
+                <li>Handy-Ansicht deutlich verbessert (Layout, Touch, Abstände).</li>
+                <li>Gruppen-Erstellung überarbeitet: schöner, verständlicher, stabiler.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="version">
+          <summary class="versionHead">
+            <div class="vLeft">
+              <span class="badge">2.6</span>
+              <span class="vTitle">Statistik & Online‑Tracking</span>
+            </div>
+            <span class="chev">⌄</span>
+          </summary>
+          <div class="vBody">
+            <ul>
+              <li><strong>Statistik‑Seite</strong>: Online‑Zahl, Views heute, Unique heute, Nachrichten heute & gesamt.</li>
+              <li><strong>Top‑10</strong>: Rangliste der aktivsten Nutzer nach gesendeten Nachrichten.</li>
+              <li><strong>Online-/Aktivitäts‑Tracking</strong>: “online” basiert auf <code>last_seen</code> (Heartbeat), nur eingeloggte Nutzer.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="version">
+          <summary class="versionHead">
+            <div class="vLeft">
+              <span class="badge">2.5</span>
+              <span class="vTitle">Stabilität, Push & UX‑Fixes</span>
+            </div>
+            <span class="chev">⌄</span>
+          </summary>
+          <div class="vBody">
+            <ul>
+              <li><strong>Letzter Chat merken</strong>: Startet beim zuletzt gechatteten Kontakt.</li>
+              <li><strong>Gruppen‑Push gefixt</strong>: Push‑Benachrichtigungen für Gruppen stabiler.</li>
+              <li><strong>Chat‑Bugfixes</strong>: Absendername zuverlässig (kein <code>": Nachricht"</code> mehr).</li>
+              <li><strong>Autoscroll</strong>: stabil am Ende – auch bei vielen Nachrichten & Bildern.</li>
+              <li><strong>Upload‑Fixes</strong>: robusterer Bild-/Datei‑Upload (Checks + Fallbacks).</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section reveal" id="features">
+      <h2 class="sectionTitle reveal">Gesamt‑Funktionen (Stand 3.0)</h2>
+
+      <div class="grid2 stagger">
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Login & Session</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Nutzer müssen eingeloggt sein (<code>user_id</code>, <code>username</code> in Session).</li>
+            <li>„Angemeldet bleiben“ (Remember‑Token / Cookie).</li>
+            <li>Weiterleitung auf <code>login.php</code>, wenn nicht eingeloggt.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Chat‑Funktion</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Nachrichten aktualisieren automatisch (alle ~5 Sekunden).</li>
+            <li>Enthält: Absendername + Farbe, Text, Uhrzeit, Status (gesendet/gelesen).</li>
+            <li>Datumstrenner bei Tageswechsel.</li>
+            <li>Sofortiges Nachladen nach Absenden.</li>
+            <li>Cooldown gegen Spam (z. B. 500 ms).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Kontakte</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Einstellungen erscheinen bei klicken auf obere Leiste.</li>
+            <li>Alias Setzen</li>
+            <li>An/Ab Pinnen</li>
+            <li>Archivieren/De‑Archivieren</li>
+          </ul>
+
+        </div>
+                <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Livesatuts</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Zeigt in ober Liste ob ein Nutzer online ist oder wann er zuletzt online war.</li>
+            <li>Sowie bei Nachrichten Status:</li>
+            <li>✔️ zugestellt / gesendet</li>
+            <li>👁️ gelesen</li>
+          </ul>
+        </div>
+
+        
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Gruppen</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Gruppen selbst erstellen. (In Einstellungen)</li>
+            <li>Mitglieder hinzufügen/entfernen (Owner‑Rechte).</li>
+            <li>Klick auf „Chat mit:“ öffnet Mitglieder‑Menü.</li>
+            <li>Dort Als Owner Mitglieder entfernen/hinzufügen.</li>
+            <li>Sowie Gruppe verlassen per Button.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Push‑Benachrichtigungen</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Aktivierung über „Benachrichtigungen aktivieren“.</li>
+            <li>Versand bei neuer Direktnachricht & Gruppen‑Nachricht.</li>
+            <li>Unterstützung: kompatible Browser + iOS‑PWA (ab iOS 16.4).</li>
+          </ul>
+      </div>
+
+      <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Bilder/Datein/GIFS verschicken</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Bilder/Dateien verschicken (bis 20 MB).</li>
+            <li>Unterstützte Formate: JPG, PNG, GIF, PDF, DOCX, ZIP, MP4 uvm.</li>
+            <li>Vorschau für Bilder & Gifs im Chat.</li>
+            <li>GIFS wählen aus riesen auswahl von giphy.com</li>
+          </ul>
+      </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Kontakte-Liste</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Nutzerliste + Gruppenliste in Sidebar.</li>
+            <li>Alias (optional), Farbe & Emoji‑Anzeige & GigaScore-Emoji.</li>
+            <li>Neue Nachrichten: Badge‑Zähler.</li>
+            <li>Kontakte werden regelmäßig aktualisiert.</li>
+            <li>Anpinnen/Archivieren, Sortierung nach neuester Nachricht.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">UI/UX</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Dark/Light Mode per Button.</li>
+            <li>Seitentitel zeigt Anzahl ungelesener Nachrichten.</li>
+            <li>GigaScore Anzeige: Header + Emoji‑Stufen.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Einstellungen</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Alias für Benutzer erstellen.</li>
+            <li>Passwort und/oder Name ändern.</li>
+            <li>Benachrichtigungen aktivieren.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Private Notizen</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Speichern von Notizen privat für sich.</li>
+            <li>zb um lange Texte wie zb Passworter Geräteübertragen zu nutzen</li>
+          </ul>
+      </div>
+        
+      <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Statistik</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Statistik zu Nachichten Anzahl</li>
+            <li>Sowie Webaufrufe</li>
+          </ul>
+      </div>
+
+      <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Sicherheit</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Passwort werden verschlüsselt gespeichert. (bcrypt)</li>
+            <li>Mit allen nutzer daten wirds sensiben umgegangen.</li>
+          </ul>
+      </div>
+
+            <div class="card">
+          <h3 style="margin:0 0 8px; letter-spacing:-.2px">Geräte</h3>
+          <ul class="small" style="margin-top:0">
+            <li>Unterstützung für Desktop, Tablet & Handy.</li>
+            <li>Optimiertes Layout für alle Bildschirmgrößen.</li>
+          </ul>
+      </div>
+    </section>
+
+    <section class="section reveal" id="zukunft">
+      <h2 class="sectionTitle">Zukünfig Geplant</h2>
+      <div class="card">
+        <ul class="small">
+          <li>Privater Account (mit 6 stelligem Code zum austauchen) und so nicht in Kontackliste Öffentlich</li>
+          <li>Nachichten löschen/bearbeiten</li>
+          <li>Antworten auf Nachrichten</li>
+          <li>Chat/Kontackte suche</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="footer">
+      © Gigachat • Release Notes 3.0 <br/>
+      Rechte beim Owner: Henri Himmelmann.
+    </div>
+  </div>
+</body>
+
+<script>
+const items = document.querySelectorAll('.reveal, .stagger > *');
+
+function update(){
+  const vh = window.innerHeight;
+
+  items.forEach(el => {
+    const rect = el.getBoundingClientRect();
+
+    // früh rein, früh fertig
+    const start = vh * 0.9;
+    const end   = vh * 0.6;
+
+    let p = (start - rect.top) / (start - end);
+    p = Math.max(0, Math.min(1, p));
+
+    el.style.opacity = p;
+    el.style.transform = `translateY(${40 * (1 - p)}px)`;
+  });
+}
+
+update();
+window.addEventListener('scroll', update, { passive: true });
+window.addEventListener('resize', update);
+</script>
+
+
+</html>

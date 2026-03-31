@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>GigaChat – Roadmap</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+    --bg:#0f1117;
+    --card:#181c25;
+    --accent:#5b8cff;
+    --accent2:#00ffcc;
+    --text:#ffffff;
+    --sub:#9ca3af;
+    --done:#22c55e;
+    --wip:#f59e0b;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui;}
+body{background:var(--bg);color:var(--text);padding:40px 20px;}
+
+h1{
+    text-align:center;
+    font-size:40px;
+    margin-bottom:10px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    background-clip:text;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+    text-align:center;
+    color:var(--sub);
+    margin-bottom:50px;
+}
+
+.section{
+    max-width:1200px;
+    margin:60px auto;
+}
+
+.section h2{
+    margin-bottom:25px;
+    color:var(--accent);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:var(--card);
+    padding:20px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.05);
+    transition:0.2s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color:var(--accent);
+}
+
+.badge{
+    display:inline-block;
+    padding:4px 8px;
+    font-size:12px;
+    border-radius:6px;
+    margin-bottom:10px;
+}
+
+.planned{background:#1e293b;color:var(--accent);}
+.wip{background:#2d1f08;color:var(--wip);}
+.done{background:#052e1a;color:var(--done);}
+
+.rating{
+    margin-top:8px;
+    font-size:14px;
+    color:var(--accent2);
+}
+
+.devlist{
+    max-width:1200px;
+    margin:80px auto 0;
+    font-size:13px;
+    color:var(--sub);
+    opacity:0.7;
+    column-count:3;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚀 GigaChat Roadmap</h1>
+<p class="subtitle">Was kommt. Was halb da ist. Was noch eskaliert.</p>
+
+<button class="badge planned" onclick="window.location.href='index.php'">Zurück</button>
+
+<!-- KOMMT NOCH -->
+<div class="section">
+<h2>🧠 Geplant (noch nicht drin)</h2>
+<div class="grid">
+
+<div class="card" data-feature="games_integration">
+<span class="badge planned">Geplant</span>
+<strong>Games Integration</strong>
+
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Kontakte suchen</strong>
+<div class="rating">11/10</div>
+</div>
+
+
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Account privat mit Code</strong>
+<div class="rating">4/10</div>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Verschlüsselung & Anti-Hacking</strong>
+<div class="rating">1/10</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Nachrichten klicken → Zeit & Datum sehen Gruppen</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Gruppen: sehen wer wann gelesen hat</strong>
+</div>
+
+
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Gelöschte Nachrichten grau & kleiner anzeigen</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Games: TicTacToe, 4Gewinnt, r/place</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>GigaCorn + Store (Themes & Stuff)</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Nachrichten anpinnen</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Servernachrichten (Gruppe beigetreten / entfernt)</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Server News / Neuheiten Meldungen</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>GigaScore Live Aktualisierung</strong>
+</div>
+
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Bilder Download Bug (neues Fenster fixen)</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>AGB Popup bei erster Anmeldung</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Strg + Enter = Umbruch</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Geplant</span>
+<strong>Scroll Button nach unten wenn hochgescrollt</strong>
+</div>
+
+</div>
+
+<!-- WIP / HALB -->
+<div class="section">
+<h2>🛠 In Arbeit / Low Prio</h2>
+<div class="grid">
+
+<div class="card">
+<span class="badge wip">Halb fertig</span>
+<strong>Lesestatus + Zeit anzeigen Gruppen</strong>
+</div>
+
+
+<div class="card">
+<span class="badge wip">Halb fertig</span>
+<strong>Statistik überarbeiten</strong>
+</div>
+
+<div class="card">
+<span class="badge wip">Halb fertig</span>
+<strong>Gruppen verbessern</strong>
+</div>
+
+<div class="card">
+<span class="badge wip">Halb fertig</span>
+<strong>Live GigaScore</strong>
+</div>
+
+</div>
+</div>
+
+
+<!-- NEU / KRASS -->
+<div class="section">
+<h2>🔥 Neu & Krass</h2>
+<div class="grid">
+
+<div class="card">
+<span class="badge wip">Fertig</span>
+<strong>Mitteilungen verbessern</strong>
+</div>
+
+
+<div class="card">
+<span class="badge planned">Neu</span>
+<strong>Farben & Emojis setzen</strong>
+<div class="rating">1000/10</div>
+</div>
+
+<div class="card">
+<span class="badge planned">Neu</span>
+<strong>GIFs senden</strong>
+</div>
+
+<div class="card">
+<span class="badge done">Neu</span>
+<strong>Notizen Tool</strong>
+</div>
+
+<div class="card">
+<span class="badge done">Neu</span>
+<strong>Antworten auf Nachrichten</strong>
+</div>
+
+<div class="card">
+<span class="badge planned">Neu</span>
+<strong>Topbar Menü kürzen (zu viel Text)</strong>
+</div>
+
+<div class="card">
+<span class="badge done">Neu</span>
+<strong>Nachrichten anpinnen</strong>
+</div>
+
+<div class="card">
+<span class="badge done">Neu</span>
+<strong>Server Nachrichten</strong>
+</div>
+
+<div class="card">
+<span class="badge done">Neu</span>
+<strong>Scroll Button nach unten</strong>
+</div>
+
+</div>
+</div>
+
+
+<!-- DEV FILE LIST -->
+<div class="section">
+<h2>⚙ Dev Dateien</h2>
+<div class="devlist">
+settings.php<br>
+index.php<br>
+style.css<br>
+send_message.php<br>
+get_messages.php<br>
+send_group_message.php<br>
+mark_read.php<br>
+mark_group_read.php<br>
+create_group.php<br>
+edit_message.php<br>
+delete_message.php<br>
+upload_file.php<br>
+push-reply.php<br>
+presence_ping.php<br>
+admin.php<br>
+admin_actions.php<br>
+statistik.php<br>
+stats_widget.php<br>
+register.php<br>
+login.php<br>
+logout.php<br>
+chat_api.php<br>
+sw.js<br>
+manifest.json<br>
+release-notes-3.0.html<br>
+datenschutz.html<br>
+impressum.html<br>
+</div>
+</div>
+
+</body>
+</html>

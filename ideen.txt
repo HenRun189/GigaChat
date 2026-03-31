@@ -1,0 +1,138 @@
+-acc privat nur mit code oder so 2/10
+
+-tagg welche klasse 10/10
+
+-Benachrichtigungen toggeln gruppen personen 7/10
+
+-Passwort zurüksetzen 7/10
+
+-kontackte suchen 11/10
+
+-verschlüselung & gegen hacking und + 1/10
+
+-blocken können (in einstellungen entblocken) 7/10
+-(sondefects nachicht bei ton) verschieden also custemisen mit soundfile 8/10
+
+-umfragen 3/10
+-(countdowns) 5/10
+
+nachichten clicken gelesen gesnende zeit datum sehen
+ (bei gruppen shen wann wer gelsen hat)
+
+-verknüpfen mit games 100000/10
+    games tiktaktok 4gewinnt r/place
+
+gigacorn + store
+    -nachichten mit effekte(konfetty) verschicken für gigacoin 10/10
+    -theamen
+    -aussehen
+    -trollen zb von jemanden die sprache auf piratisch oder so stellen
+
+nachichten anpinnen 
+
+servernachichten gruppe hinzugefügt ausgetreten oder entfernt und so
+
+server nachicht zb neuheiten oder so 
+
+Giga score hat keine live aktulisirung
+
+antworten auf nachicht
+
+bilder in webapp downloaden neues fenser bufixen
+
+bei anmelden erstes mal oder länger zeit pop up mit abgs aktiezpieren und sowas
+
+strg enter umbruch
+
+wenn hochgescroell mitig oben butten mit peil nach unten um ganz nach unten zu springen
+
+scroll problem lösen
+
+------------------------------------
+
+./ 1 gelesen (verbessert)
+./ 2 mitelungen gehn weg (verbessert)
+./ 3 mitelungen deaktivieren (crazy aber neu)
+./ 4 vorderung es aktivirens der miteilung + erkläreung auf schulipad wie es geht .. (unwichtig)
+./ 5 bei den nachicht landet man nicht ganz unten und nicht insten alle laden so lezten 20 oder so älter dann beim scrollen 
+./ 6 notizen tool (neu)
+./ 7 statistk überarbeiten (verbessert)
+./ 8 handy version anpassen 
+./ 10 zulest online / onlien oben im chat anzeigen lesebestätigung (neu)
+./ 11 einstellungen schöner 
+./ 12 Benachrichtigungen fixen (auf sperbidlchirm angezeit verschwinden einfach und wied als gesene markiert)
+./ 9 auf mitelungen direkt antworten (neu nicht auf ios)
+./  13 gruppen erstellen besser schöner 
+./ 14 gifs verschicken können (krass neu)
+./gruppen neue naicht in kontacktliste anzeigen sowie gif geht nicht in gruppen 
+./19 nachicht kann man doppelt senden das problem fixen
+./22 bearbeiten/löschen von nachicht verbessern (schöner)
+./menü beim clicken auf topbar hat to mutch text
+./glöschte nachichten anderst (grau klein) anzeigen
+./-farben emoji setzen 1000/10
+
+
+
+
+
+settings.php
+index.nginx-debian.html
+php-error.log
+get_messages.php
+send_message.php
+send_group_message.php
+index.php
+style.css
+mark_group_read.php
+ideen.txt
+code_stats.php
+upload_file.php
+get_user_status.php
+get_group_messages.php
+ping.php
+mark_read.php
+sw.js
+unsubscribe_push.php
+toggle_contact.php
+stats_widget.php
+get_group_members.php
+get_group_info.php
+get_contacts.php
+get_available_users.php
+create_group.php
+config_stats.php
+check_read_status.php
+admin_actions.php
+admin.php
+add_to_group.php
+stats_bootstrap.php
+statistik.php
+save_notes.php
+save-subscription.php
+remove_from_group.php
+register.php
+push-reply.php
+presence_ping.php
+manifest.json
+logout.php
+login.php
+leave_group.php
+get_notes.php
+generate_vapid.php
+edit_message.php
+edit_group_message.php
+delete_message.php
+delete_group_message.php
+release-notes-3.0.html
+release-notes-2.7.html
+release-notes.txt
+generate_pw.php
+chat_api.php
+chatgptwow.php
+logo.png
+impressum.html
+datenschutz.html
+composer.json
+composer.lock
+bug_repot.php
+uploads

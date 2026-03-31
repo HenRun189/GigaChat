@@ -1,0 +1,69 @@
+Release-Notes 2.5
+---------------------------------  
+- Push-Benachrichtigungen fuer neue Nachrichten (PWA, iOS 16.4+ und Desktop-Browser)
+- Angemeldet bleiben
+- Gruppen selbsterstellen
+- Bentuzer zu gruppen hinzufuegen/entfernen
+- Bentuzer anpinnen/archiviren
+- Bentuzer sotieren sich nach neuster nachicht
+- Bilder/Datein verschicken bis 20MB
+
+Gesamt-Funktionen (Stand 2.5)  
+---------------------------------  
+
+Login & Session  
+- Nutzer muessen eingeloggt sein (user_id, username in Session).  
+- Angemeldung im Cach speichern
+- Weiterleitung auf login.php, wenn nicht eingeloggt.
+
+Chat-Funktion  
+- Nachrichten werden automatisch alle 5 Sekunden aktualisiert.  
+- Nachrichten enthalten:  
+  - Absendername + Farbe  
+  - Nachrichtentext  
+  - Uhrzeit  
+  - Lesestatus (gesendet/gelesen)  
+- Datumstrenner bei Tageswechsel.  
+- Nachrichten werden nach Absenden sofort geladen.  
+- Eingabesperre fuer Spam (Cooldown: 500 ms).
+- Bilder/Datein verschicken bis 20MB
+- Push-Benachrichtigungen fuer neue Nachrichten (PWA, iOS 16.4+ und Desktop-Browser)
+
+Lesestatus  
+- Hacken-Symbol oder Text fuer Nachricht zugestellt.  
+- Augen-Symbol oder Text fuer Nachricht gelesen.  
+
+Gruppen  
+- Gruppen selbsterstellen
+- Bentuzer zu gruppen hinzufuegen/entfernen
+- Gruppen koennen angezeigt und ausgewaehlt werden.  
+- Klick auf Chat mit: -> Menue mit Mitgliederliste.  
+- Gruppe verlassen ueber eigenen Button moeglich.  
+
+Kontakte  
+- Nutzerliste und Gruppenliste in Sidebar.  
+- Anzeige von Alias (falls vorhanden) und Farbe.  
+- Neue Nachrichten -> Zaehler-Badge.  
+- Logout-Button am Ende der Liste.  
+- Kontakte werden alle 10 Sekunden aktualisiert.
+- Bentuzer anpinnen/archiviren
+- Bentuzer sotieren sich nach neuster nachicht
+
+UI/UX  
+- Dark/Light Mode per Button.  
+- Seitentitel zeigt Anzahl ungelesener Nachrichten, z. B. (3) Neue Nachrichten - Chat.  
+
+Einstellungen  
+- Button Einstellungen -> fuehrt zu settings.php.  
+- Alias fuer Benutzer erstellen
+- Passwort und/oder Name aendern
+
+Push-Benachrichtigungen  
+- Aktivierung ueber Button Benachrichtigungen aktivieren.  
+- Speicherung der Push-Subscription pro Nutzer in der Datenbank.  
+- Versand einer Push-Nachricht an den Empfaenger bei neuer Direktnachricht.  
+- Unterstuetzung fuer Web-Push in kompatiblen Browsern und iOS-PWAs ab Version 16.4.
+
+Sonstiges  
+- Footer mit Versionshinweis und Kontakt (HenRun189).  
+- Alle Rechte bei Henri Himmelmann.  

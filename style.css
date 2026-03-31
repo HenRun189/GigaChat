@@ -1,0 +1,1395 @@
+/* ==============================
+   Variablen
+   ============================== */
+:root {
+  --bg: #f6f1e5;
+  --card: #ffffff;
+  --muted: #718096;
+  --accent: #ff6b6b;
+  --accent-2: #4fd1c5;
+  --text: #1a202c;
+  --border: #e2e8f0;
+
+  --msg-bg-me: linear-gradient(180deg, #3b59c6, #5a72e0);
+  --msg-color-me: #fff;
+  --msg-bg-you: linear-gradient(180deg, #fdfdfd, #f0f0f0);
+  --msg-color-you: #1a202c;
+  --border-msg: rgba(59,130,246,0.4);
+
+  /* NEW: pinned contact background */
+  --pinned-bg: rgba(0,0,0,0.06);
+}
+
+body.dark {
+  --bg: #0d1322;
+  --card: #192332;
+  --muted: #94a3b8;
+  --accent: #3b82f6;
+  --accent-2: #22d3ee;
+  --text: #f9f1f1;
+  --border: #334155;
+
+  --msg-bg-me: linear-gradient(180deg, #1e3a8a, #1e40af);
+  --msg-color-me: #fff;
+  --msg-bg-you: linear-gradient(180deg, #2a2e3c, #1d2230);
+  --msg-color-you: #f1f5f9;
+  --border-msg: rgba(0, 20, 52, 0.4);
+
+  /* NEW: pinned contact background (slightly lighter in dark) */
+  --pinned-bg: rgba(255,255,255,0.06);
+}
+
+/* ==============================
+   Grundlayout: Body fix, Mitte flex
+   ============================== */
+html,
+body {
+  height: 100dvh; /* iOS fix */
+  margin: 0;
+  padding: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden; /* nur horizontal blocken */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==============================
+   Header / Top-Bar
+   ============================== */
+.top-bar {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.top-bar button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.top-bar button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ==============================
+   Footer-Hinweis (Release-Notes)
+   ============================== */
+.footer-note {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  padding: 8px 10px;
+  border-top: 1px solid #ccc;
+  text-align: center;
+  background: var(--card);
+  color: var(--text);
+}
+
+/* ==============================
+   Haupt-Content: Chat + Kontakte
+   ============================== */
+.container {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ==============================
+   Karten: Chat & Userliste
+   ============================== */
+.chat-card,
+.users-card {
+  background: var(--card);
+  color: var(--text);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Chat-Header */
+.chat-card h2 {
+  margin: 0;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Rechte Karte */
+.users-card {
+  padding: 8px;
+}
+
+/* ==============================
+   Chatbox & Nachrichten
+   ============================== */
+#chatbox {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.message {
+  position: relative;
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  word-wrap: break-word;
+  background: var(--msg-bg-you);
+  color: var(--msg-color-you);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  border: 1px solid var(--border-msg);
+  margin: 4px 0;
+}
+
+.message.me {
+  margin-left: auto;
+  background: var(--msg-bg-me);
+  border: 1px solid var(--border-msg);
+  color: var(--msg-color-me);
+}
+
+.message span.msg-time {
+  font-size: 10px;
+  color: #666;
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
+}
+
+.message span.msg-status {
+  font-size: 10px;
+  color: #666;
+  margin-right: 4px;
+}
+
+.chat-date {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 12px;
+  color: #999;
+}
+
+/* ==============================
+   Chat Input
+   ============================== */
+.chat-input {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+
+.chat-input input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  outline: none;
+}
+
+.chat-input button {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(37,99,235,0.12);
+  transition: background 0.2s;
+}
+
+.chat-input button:hover {
+  background: #1d4ed8;
+}
+
+/* ==============================
+   Userliste rechts – Unread FINAL
+   ============================== */
+
+.users-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+/* Basis-Kachel */
+.users-list li {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 8px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* Personen rund */
+.users-list li[data-type="user"] {
+  border-radius: 12px;
+}
+
+/* Gruppen etwas eckiger */
+.users-list li[data-type="group"] {
+  border-radius: 7px;
+}
+
+/* Hover (normal) */
+.users-list li:hover {
+  background: rgba(59,130,246,0.10);
+}
+
+/* Button-Layout */
+.user-btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Linke Seite */
+.user-btn .left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.user-btn .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Rechte Seite Emoji */
+.user-btn .score-emoji {
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+/* ==============================
+   🔴 Badge: IMMER roter Kreis
+   ============================== */
+.new-badge {
+  background: #ff0000;
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* ==============================
+   🟥 UNGELESEN – GANZE KACHEL
+   ============================== */
+
+/* Dark Mode */
+body.dark .users-list li:has(.new-badge) {
+  background: rgba(160, 40, 40, 0.25);
+  border-color: rgba(160, 40, 40, 0.45);
+}
+
+/* Hover im Dark Mode */
+body.dark .users-list li:has(.new-badge):hover {
+  background: rgba(160, 40, 40, 0.35);
+}
+
+/* Light Mode */
+body:not(.dark) .users-list li:has(.new-badge) {
+  background: rgba(255, 90, 90, 0.20);
+  border-color: rgba(255, 90, 90, 0.45);
+}
+
+/* Hover im Light Mode */
+body:not(.dark) .users-list li:has(.new-badge):hover {
+  background: rgba(255, 90, 90, 0.30);
+}
+
+/* Archiv-Header */
+.archive-header .user-btn {
+  background: #222;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Archiv-Liste */
+.archive-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 5px;
+}
+
+/* ==============================
+   Menüs
+   ============================== */
+.chat-menu,
+.group-menu {
+  position: absolute;
+  top: 120px;
+  left: 18px;
+  background: #040123;
+  border: 1px solid #030e35;
+  border-radius: 10px;
+  padding: 16px;
+  width: 600px;
+  max-width: 90vw;
+  max-height: 200vh;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  z-index: 1000;
+  color: #fff;
+  font-size: 25px;
+}
+
+.chat-menu h3,
+.group-menu h3 {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+}
+
+.chat-menu ul,
+.group-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.chat-menu ul li,
+.group-menu ul li {
+  padding: 6px 0;
+  border-bottom: 1px solid #444;
+  color: #fff;
+}
+
+.chat-menu button,
+.group-menu button {
+  width: 100%;
+  padding: 10px;
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Hover für klickbare Titel */
+.clickable-group:hover,
+.clickable-user:hover {
+  background-color: #182546;
+  transition: background-color 0.2s;
+}
+
+/* ==============================
+   Footer ganz unten
+   ============================== */
+.footer-bottom {
+  flex: 0 0 auto;
+  text-align: center;
+  font-size: 10px;
+  color: #aaa;
+  padding: 4px 0;
+  background: #f6f6f6;
+}
+
+body.dark .footer-bottom {
+  background: #111;
+  color: #aaa;
+}
+
+/* ==============================
+   Responsive
+   ============================== */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .users-card {
+    order: 2;
+    max-height: 250px;
+  }
+}
+
+/* ==============================
+   Bilder / Overlay / Dateien
+   ============================== */
+.chat-image {
+  max-width: 250px;
+  max-height: 250px;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.image-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.image-overlay-inner {
+  max-width: 95vw;
+  max-height: 95vh;
+  text-align: center;
+}
+
+.image-overlay-inner img {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 8px;
+}
+
+.image-overlay-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.image-overlay-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.chat-file {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #222;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ==============================
+   GigaChat Toast / Konfetti
+   ============================== */
+#gigaToast {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.giga-toast-main {
+  background: linear-gradient(135deg, #111827, #1f2933);
+  border-radius: 18px;
+  padding: 24px 28px 20px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.55);
+  max-width: 480px;
+  width: 90%;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.giga-toast-title {
+  display: block;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.giga-toast-sub {
+  font-size: 15px;
+  color: #d1d5db;
+  margin-bottom: 18px;
+}
+
+.giga-toast-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.giga-toast-more {
+  background: #10b981;
+  border: none;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.giga-toast-more:hover {
+  background: #12d19a;
+  transform: translateY(-1px);
+}
+
+.giga-toast-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.giga-toast-close:hover {
+  color: #e5e7eb;
+}
+
+.giga-toast-details {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  transition: all 0.25s ease;
+  font-size: 14px;
+  color: #e5e7eb;
+  background: linear-gradient(135deg, #111827, #1f2933);
+  border-radius: 18px;
+  padding: 24px 28px 20px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.55);
+}
+
+.giga-toast-details-open {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 14px;
+}
+
+.giga-toast-details a {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+
+.giga-toast-hide {
+  animation: giga-toast-out 0.3s forwards;
+}
+
+@keyframes giga-toast-out {
+  to { opacity: 0; transform: scale(0.96); }
+}
+
+v/* === FORCE users-list layout (fix links/rechts + pinned) === */
+.users-list,
+.users-list * {
+  box-sizing: border-box;
+}
+
+.users-list li {
+  text-align: left !important;
+}
+
+/* Person rund / Gruppe eckig */
+.users-list li[data-type="user"] { border-radius: 12px !important; }
+.users-list li[data-type="group"] { border-radius: 7px !important; }
+
+/* Pinned sichtbar (light + dark) */
+.users-list li.pinned {
+  background: rgba(0,0,0,0.07) !important; /* light: etwas dunkler */
+}
+body.dark .users-list li.pinned {
+  background: rgba(255,255,255,0.07) !important; /* dark: etwas heller */
+}
+
+/* Kachel-Inhalt: links Name, rechts Emoji */
+.users-list li .user-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+.users-list li .user-btn .left {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.users-list li .user-btn .name {
+  display: inline-block !important;
+  text-align: left !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.users-list li .user-btn .score-emoji {
+  flex: 0 0 auto !important;
+  margin-left: 10px !important;
+  font-size: 16px !important;
+}
+
+/* === Chat Header mit GigaScore === */
+.chat-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.chat-header * {
+  pointer-events: none;
+}
+
+.chat-header .chat-left{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.chat-header .chat-center,
+.chat-header .chat-right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.chat-header .chat-right{
+  align-items: flex-end;
+}
+
+.chat-header .score-number{
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.chat-header .score-label{
+  font-size: 10px;
+  opacity: 0.75;
+}
+
+/* GIFS */
+
+.gif-thumb {
+  width: 120px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.chat-gif {
+  max-width: 220px;
+  border-radius: 12px;
+}
+
+
+
+/* ==============================
+   Push-Benachrichtigungs-Modal
+   ============================== */
+   .push-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.push-card {
+  background: #111;
+  color: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  width: 90%;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  animation: pop 0.2s ease;
+}
+
+.push-card h3 {
+  margin-top: 0;
+}
+
+.push-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.push-actions button {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.push-actions button.ghost {
+  background: transparent;
+  border: 1px solid #555;
+  color: #aaa;
+}
+
+.push-actions button:not(.ghost) {
+  background: #6b6bff;
+  color: #fff;
+}
+
+@keyframes pop {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+
+/* ==============================
+   📱 MOBILE FIX – Full Screen Layout
+   ============================== */
+@media (max-width: 600px) {
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .container {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .chat-card {
+    flex: 3 1 0;
+    min-height: 0;
+  }
+
+  #chatbox {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .users-card {
+    flex: 2 1 0;
+    min-height: 0;
+    padding: 6px;
+  }
+
+  .users-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    overflow-y: auto;
+  }
+
+  .users-list li {
+    padding: 6px;
+  }
+}
+
+
+/* ==============================
+   🍎 iOS SAFARI / WEB APP FIX
+   ============================== */
+@supports (-webkit-touch-callout: none) {
+
+  html, body {
+    height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: -webkit-fill-available;
+  }
+
+  .container {
+    min-height: 100%;
+  }
+}
+
+/* === GIF Overlay === */
+.gif-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.gif-panel {
+  background: #111;
+  width: 100%;
+  max-height: 90vh;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.gif-header {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+}
+
+.gif-header input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px; /* 🔥 verhindert iOS Zoom */
+}
+
+.gif-header button {
+  background: #ff5f5f;
+  border: none;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 18px;
+}
+
+.gif-results {
+  padding: 10px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.gif-results img {
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+
+/* ===============================
+   CHAT MENU – RESPONSIVE CLEAN
+   =============================== */
+
+.chat-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min(94vw, 520px);          /* Desktop größer */
+  max-height: 85vh;
+
+  background: #111;
+  color: #fff;
+
+  border-radius: 24px;
+  padding: 24px;
+
+  box-shadow: 0 30px 80px rgba(0,0,0,.65);
+  z-index: 9999;
+
+  display: none;
+}
+
+/* ---------- Title ---------- */
+.chat-menu h3 {
+  margin: 0 0 18px;
+  font-size: 22px;                 /* Desktop */
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ---------- List ---------- */
+.chat-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chat-menu li {
+  padding: 16px 16px;
+  margin-bottom: 12px;
+
+  background: #1c1c1e;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ---------- Inputs ---------- */
+.chat-menu input {
+  flex: 1;
+  background: #000;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+/* ---------- Buttons ---------- */
+.chat-menu button {
+  background: #2c2c2e;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.chat-menu button:hover {
+  background: #3a3a3c;
+}
+
+/* ---------- Danger / Action ---------- */
+#menuActionBtn {
+  margin-top: 16px;
+  width: 100%;
+  background: #ff4d4d;
+}
+
+/* ===============================
+   iPad / Tablets
+   =============================== */
+@media (max-width: 900px) {
+  .chat-menu {
+    width: min(96vw, 460px);
+    padding: 20px;
+  }
+
+  .chat-menu h3 {
+    font-size: 20px;
+  }
+
+  .chat-menu li {
+    padding: 14px;
+  }
+
+  .chat-menu button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}
+
+/* ===============================
+   iPhone / Mobile
+   =============================== */
+@media (max-width: 600px) {
+  .chat-menu {
+    width: 96vw;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .chat-menu h3 {
+    font-size: 18px;
+  }
+
+  .chat-menu li {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .chat-menu button {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .chat-menu input {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+
+.msg-meta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.msg-action {
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.msg-action:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+.msg-hint {
+  font-size: 10px;
+  opacity: 0.5;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.msg-edited {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-left: 4px;
+}
+
+.msg-deleted {
+  font-size: 11px;
+  opacity: 0.45;
+  font-style: italic;
+}
+
+.msg-menu {
+  position: absolute;
+  right: 8px;
+  bottom: 100%;
+  background: #1c1c1c;
+  border-radius: 12px;
+  padding: 6px;
+  z-index: 9999;
+}
+
+.msg-menu button {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.msg-menu button:hover {
+  background: #333;
+}
+
+
+.msg-meta {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.msg-deleted-meta {
+  justify-content: flex-end;
+}
+
+.msg-edited {
+  opacity: 0.6;
+}
+
+.message.deleted {
+  opacity: 0.45;
+}
+
+.message.deleted .msg-status,
+.message.deleted .msg-time {
+  display: none;
+}
+
+.msg-deleted {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+li.has-new .user-btn {
+  background: rgba(255, 80, 80, 0.2);
+}
+
+
+
+/*Neu*/
+.chat-image,
+.chat-gif {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.gigacoin {
+    font-weight: bold;
+    color: gold;
+}
+.shop-menu {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.shop-menu button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+
+
+/* ==============================
+   PURPLE THEME
+   ============================== */
+
+body.theme-purple,
+body.dark.theme-purple {
+  --bg: #140f1f;
+  --card: #1e1630;
+  --muted: #b794f4;
+  --accent: #a855f7;
+  --accent-2: #c084fc;
+  --text: #f3e8ff;
+  --border: #3b2c5f;
+
+  --msg-bg-me: linear-gradient(180deg, #6d28d9, #7c3aed);
+  --msg-color-me: #ffffff;
+
+  --msg-bg-you: linear-gradient(180deg, #2e1f47, #241734);
+  --msg-color-you: #f3e8ff;
+
+  --border-msg: rgba(168, 85, 247, 0.4);
+}
+
+/* ==============================
+   OCEAN THEME
+   ============================== */
+
+body.theme-ocean,
+body.dark.theme-ocean {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --muted: #94a3b8;
+  --accent: #0ea5e9;
+  --accent-2: #38bdf8;
+  --text: #e2e8f0;
+  --border: #334155;
+
+  --msg-bg-me: linear-gradient(180deg, #0284c7, #0369a1);
+  --msg-color-me: #ffffff;
+
+  --msg-bg-you: linear-gradient(180deg, #1e293b, #172033);
+  --msg-color-you: #e2e8f0;
+
+  --border-msg: rgba(14,165,233,0.4);
+}
+
+/* ==============================
+   FOREST THEME
+   ============================== */
+
+body.theme-forest,
+body.dark.theme-forest {
+  --bg: #0f1f14;
+  --card: #1b2e22;
+  --muted: #86efac;
+  --accent: #22c55e;
+  --accent-2: #4ade80;
+  --text: #ecfdf5;
+  --border: #355f47;
+
+  --msg-bg-me: linear-gradient(180deg, #16a34a, #15803d);
+  --msg-color-me: #ffffff;
+
+  --msg-bg-you: linear-gradient(180deg, #223a2b, #1a2f23);
+  --msg-color-you: #ecfdf5;
+
+  --border-msg: rgba(34,197,94,0.4);
+}
+
+/* ============================================================
+   UPGRADED THEMES SECTION
+   ============================================================ */
+
+/* --- SUNSET 2.0 (Vibrant & Warm) --- */
+body.theme-sunset {
+    --bg: linear-gradient(135deg, #240b36, #c31432); /* Deep purple to red */
+    --card: rgba(20, 10, 30, 0.7);
+    --muted: #ffa07a;
+    --accent: #ff4e50;
+    --accent-2: #f9d423;
+    --text: #fff;
+    --border: rgba(255, 78, 80, 0.3);
+    --msg-bg-me: linear-gradient(135deg, #ff4e50, #f9d423);
+    --msg-color-me: #000;
+    --msg-bg-you: rgba(255, 255, 255, 0.1);
+    --msg-color-you: #fff;
+    backdrop-filter: blur(10px);
+}
+
+/* --- CYBER NEON 2.0 (High Contrast) --- */
+body.theme-cyber {
+    --bg: #0b0d17;
+    --card: #161b22;
+    --muted: #00f2ff;
+    --accent: #00f2ff; /* Cyan */
+    --accent-2: #7000ff; /* Purple Glow */
+    --text: #e6edf3;
+    --border: #30363d;
+    --msg-bg-me: linear-gradient(90deg, #00f2ff, #006aff);
+    --msg-color-me: #000;
+    --msg-bg-you: #21262d;
+    --msg-color-you: #e6edf3;
+    --border-msg: #00f2ff;
+}
+body.theme-cyber .message.me { box-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
+
+/* --- PURPLE GALAXY --- */
+body.theme-purple {
+    --bg: #0f0c29;
+    --card: rgba(48, 43, 99, 0.4);
+    --muted: #a29bfe;
+    --accent: #6c5ce7;
+    --accent-2: #a29bfe;
+    --text: #ffffff;
+    --border: rgba(108, 92, 231, 0.3);
+    --msg-bg-me: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    --msg-color-me: #fff;
+    --msg-bg-you: rgba(255, 255, 255, 0.05);
+    --msg-color-you: #fff;
+}
+
+/* --- OCEAN DEEP --- */
+body.theme-ocean {
+    --bg: radial-gradient(circle at top, #1b2735 0%, #090a0f 100%);
+    --card: rgba(22, 33, 62, 0.8);
+    --muted: #4ecca3;
+    --accent: #00d2ff;
+    --accent-2: #3a7bd5;
+    --text: #e0e0e0;
+    --border: #1f4068;
+    --msg-bg-me: linear-gradient(to right, #00d2ff, #3a7bd5);
+    --msg-color-me: #fff;
+    --msg-bg-you: #16213e;
+    --msg-color-you: #e0e0e0;
+}
+
+/* ==============================
+   NEUE THEMEN
+   ============================== */
+
+/* --- MIDNIGHT CHERRY (Elegant & Dark Red) --- */
+body.theme-cherry {
+    --bg: #1a080a;
+    --card: #2d0f12;
+    --muted: #ff4d6d;
+    --accent: #c9184a;
+    --accent-2: #ff758f;
+    --text: #fff0f3;
+    --border: #590d22;
+    --msg-bg-me: linear-gradient(135deg, #a4133c, #ff4d6d);
+    --msg-color-me: #fff;
+    --msg-bg-you: #411218;
+    --msg-color-you: #fff0f3;
+    --border-msg: rgba(201, 24, 74, 0.5);
+}
+
+/* --- AURORA BOREALIS (Green-Blue-Purple Mix) --- */
+body.theme-aurora {
+    --bg: #011627;
+    --card: rgba(1, 22, 39, 0.8);
+    --muted: #2ec4b6;
+    --accent: #2ec4b6;
+    --accent-2: #e71d36;
+    --text: #fdfffc;
+    --border: #1e3a5a;
+    --msg-bg-me: linear-gradient(135deg, #2ec4b6, #011627);
+    --msg-color-me: #fff;
+    --msg-bg-you: #0b1c2c;
+    --msg-color-you: #fdfffc;
+    --border-msg: #2ec4b6;
+}
+
+/* ============================================================
+   UI POLISH FÜR ALLE THEMES
+   ============================================================ */
+.chat-card, .users-card, .shop-menu, .chat-menu {
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+}
+
+.message {
+    border: 1px solid var(--border-msg) !important;
+    border-radius: 18px !important;
+} 
+
+
+
+
+.floating-button{
+position:fixed;
+
+top:20px;
+right:20px;
+
+width:52px;
+height:52px;
+
+border-radius:50%;
+
+background:rgba(15,23,42,0.9);
+border:1px solid rgba(55,65,81,0.9);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:20px;
+color:white;
+text-decoration:none;
+
+backdrop-filter:blur(10px);
+
+z-index:999;
+
+transition:all .2s ease;
+}
+
+.floating-button:hover{
+transform:scale(1.08);
+background:rgba(30,41,59,0.95);
+}
