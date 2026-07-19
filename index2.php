@@ -451,17 +451,23 @@ chatbox.addEventListener('scroll', () => {
 
 // === Nachrichten laden ===
 function loadMessages(newOnly = true) {
-  let url = currentType === 'user' 
-    ? `get_messages.php?user_id=${currentChat}&last_id=${newOnly ? lastId : 0}&limit=${newOnly ? 30 : 80}`
-    : `get_group_messages.php?group_id=${currentChat}&last_id=${newOnly ? lastId : 0}&limit=${newOnly ? 30 : 80}`;
+  const chatId = currentChat;
+  const chatType = currentType;
+  const shouldStickToBottom = autoScroll;
+  let url = chatType === 'user'
+    ? `get_messages.php?user_id=${chatId}&last_id=${newOnly ? lastId : 0}&limit=${newOnly ? 50 : 20}`
+    : `get_group_messages.php?group_id=${chatId}&last_id=${newOnly ? lastId : 0}&limit=${newOnly ? 50 : 20}`;
 
-  fetch(url)
+  return fetch(url)
     .then(r => r.json())
     .then(data => {
+      // Ignore a response from a chat that was switched while it loaded.
+      if (chatId !== currentChat || chatType !== currentType) return;
       if (!data || data.length === 0) {
-        if (autoScroll) chatbox.scrollTop = chatbox.scrollHeight;
+        if (!newOnly) reachedTop = true;
         return;
       }
+      if (!newOnly && data.length < 20) reachedTop = true;
 
       if (!newOnly) {
         chatbox.innerHTML = "";
@@ -542,28 +548,22 @@ function loadMessages(newOnly = true) {
 
       chatbox.appendChild(fragment);
 
-    if (autoScroll) {
-        // Alle Bilder im aktuellen Fragment abwarten bevor gescrollt wird,
-        // sonst scrollt es zu früh und landet nicht ganz unten
+    if (shouldStickToBottom) {
+        const keepAtBottom = () => {
+            if (chatId === currentChat && chatType === currentType && autoScroll) {
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        };
         const newImages = Array.from(chatbox.querySelectorAll('img')).filter(img => !img.complete);
 
         if (newImages.length > 0) {
-            // Bilder noch am Laden → warten bis alle fertig, dann scrollen
             const promises = newImages.map(img => new Promise(res => {
-                img.onload  = res;
-                img.onerror = res; // auch bei Fehler weitermachen
+                img.onload = res;
+                img.onerror = res;
             }));
-
-            Promise.all(promises).then(() => {
-                requestAnimationFrame(() => {
-                    chatbox.scrollTop = chatbox.scrollHeight;
-                });
-            });
+            Promise.all(promises).then(() => requestAnimationFrame(keepAtBottom));
         } else {
-            // Kein Bild → sofort scrollen
-            requestAnimationFrame(() => {
-                chatbox.scrollTop = chatbox.scrollHeight;
-            });
+            requestAnimationFrame(keepAtBottom);
         }
     }
 
@@ -867,12 +867,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadContacts();  
 
-    loadMessages(false);
-
-    setTimeout(() => {
-      chatbox.scrollTop = chatbox.scrollHeight;
-      initialLoading = false;
-    }, 400);
+    const initialChatId = currentChat;
+    const initialChatType = currentType;
+    loadMessages(false).finally(() => {
+      if (initialChatId !== currentChat || initialChatType !== currentType) return;
+      requestAnimationFrame(() => {
+        if (initialChatId !== currentChat || initialChatType !== currentType) return;
+        chatbox.scrollTop = chatbox.scrollHeight;
+        initialLoading = false;
+      });
+    });
 
 
     setTimeout(() => {
@@ -930,13 +934,16 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('theirGigaScore').textContent = currentChatGigaScore;
 
       // ── Nachrichten laden + danach scrollen & Lock freigeben ─────
-      loadMessages(false);
-
-      setTimeout(() => {
-          autoScroll           = true;
-          chatbox.scrollTop    = chatbox.scrollHeight;
-          initialLoading       = false;   // FIX: erst NACH dem Scroll freigeben
-      }, 650); // etwas länger als vorher (250ms), damit Bilder geladen sind
+      const openedChatId = currentChat;
+      const openedChatType = currentType;
+      loadMessages(false).finally(() => {
+        if (openedChatId !== currentChat || openedChatType !== currentType) return;
+        requestAnimationFrame(() => {
+          if (openedChatId !== currentChat || openedChatType !== currentType) return;
+          chatbox.scrollTop = chatbox.scrollHeight;
+          initialLoading = false;
+        });
+      });
 
       // ── Badges, Status, Notifications ───────────────────────────
       fetch(`mark_read.php?user_id=${currentChat}`);
@@ -1310,40 +1317,43 @@ function startReadStatusPolling() {
 
 function loadOlderMessages() {
   loadingOlder = true;
-
+  const chatId = currentChat;
+  const chatType = currentType;
   const firstMsg = chatbox.querySelector('.message[data-id]');
   if (!firstMsg) {
     loadingOlder = false;
     return;
   }
   const oldHeight = chatbox.scrollHeight;
+  const oldScrollTop = chatbox.scrollTop;
+  const endpoint = chatType === 'user' ? 'get_messages.php?user_id=' : 'get_group_messages.php?group_id=';
+  const beforeId = parseInt(firstMsg.dataset.id, 10);
 
-  fetch(`get_messages.php?user_id=${currentChat}&before_id=${parseInt(firstMsg.dataset.id, 10)}&limit=30`)
+  fetch(`${endpoint}${chatId}&before_id=${beforeId}&limit=20`)
     .then(r => r.json())
-    .then(data => {
-      if (!data.length) {
+    .then(messages => {
+      if (chatId !== currentChat || chatType !== currentType) return;
+      if (!messages || messages.length === 0) {
         reachedTop = true;
         return;
       }
+      if (messages.length < 20) reachedTop = true;
 
-
-      data.reverse().forEach(msg => {
+      const fragment = document.createDocumentFragment();
+      messages.forEach(msg => {
         if (document.getElementById("msg_" + msg.id)) return;
-
         const div = document.createElement("div");
         div.id = "msg_" + msg.id;
         div.dataset.id = msg.id;
         div.className = "message " + (msg.sender_id == USER_ID ? "me" : "");
         div.innerHTML = `<b>${msg.username}</b>: ${linkify(msg.text)}`;
-
-        chatbox.insertBefore(div, chatbox.firstChild);
+        fragment.appendChild(div);
       });
-
-      const newHeight = chatbox.scrollHeight;
-      chatbox.scrollTop = newHeight - oldHeight;
+      chatbox.insertBefore(fragment, chatbox.firstChild);
+      chatbox.scrollTop = oldScrollTop + (chatbox.scrollHeight - oldHeight);
     })
     .finally(() => {
-      loadingOlder = false;
+      if (chatId === currentChat && chatType === currentType) loadingOlder = false;
     });
 }
 

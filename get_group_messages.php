@@ -18,7 +18,20 @@ $conn->query("SET time_zone = 'Europe/Berlin'");
 $user_id  = (int)$_SESSION['user_id'];
 $group_id = (int)($_GET['group_id'] ?? 0);
 $last_id  = (int)($_GET['last_id'] ?? 0);
+$before_id = (int)($_GET['before_id'] ?? 0);
 $limit    = min(50, (int)($_GET['limit'] ?? 50));
+
+if ($last_id > 0) {
+    $cursor = "AND gm.id > $last_id";
+    $order = 'ORDER BY gm.id ASC';
+} elseif ($before_id > 0) {
+    $cursor = "AND gm.id < $before_id";
+    $order = 'ORDER BY gm.id DESC';
+} else {
+    // A chat opens at the newest page; the response is reversed below for display.
+    $cursor = '';
+    $order = 'ORDER BY gm.id DESC';
+}
 
 $sql = "
 SELECT 
@@ -42,8 +55,8 @@ LEFT JOIN user_aliases ua
 LEFT JOIN group_message_files gf
   ON gf.message_id = gm.id
 WHERE gm.group_id = $group_id
-  AND gm.id > $last_id
-ORDER BY gm.id ASC
+  $cursor
+$order
 LIMIT $limit
 ";
 
@@ -71,6 +84,10 @@ while ($row = $result->fetch_assoc()) {
       "edited"     => (int)$row['edited'],
       "deleted"    => (int)$row['deleted'],
   ];
+}
+
+if ($before_id > 0 || $last_id === 0) {
+    $messages = array_reverse($messages);
 }
 
 header('Content-Type: application/json; charset=utf-8');

@@ -148,7 +148,8 @@ body {
   gap: 8px;
   padding: 10px 12px;
   overflow-y: auto;
-  scroll-behavior: smooth;
+  /* Scroll restoration must be immediate when older messages are prepended. */
+  scroll-behavior: auto;
 }
 
 .message {
